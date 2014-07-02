@@ -1,10 +1,22 @@
 class EntitiesController < ApplicationController
+  load 'parser.rb'
   before_action :set_entity, only: [:show, :edit, :update, :destroy]
 
   # GET /entities
   # GET /entities.json
   def index
+   if(params[:query])
+    q = params[:query]
+    s = Parser.parse(q)
+    
+    s = "Entity"+s.join('')+".all"
+    puts s
+    @entities = eval(s)
+
+  else
     @entities = Entity.where('name'=>/b/i).all
+  
+  end
   end
 
   # GET /entities/1
@@ -72,3 +84,12 @@ class EntitiesController < ApplicationController
       params[:entity]
     end
 end
+#    reg = /[a-zA-Z0-9_\/\s]*:[a-zA-Z0-9_\/\s]*/
+#    arr = []
+#    q.scan(reg){|m| arr<<m}    
+#    query_hash = {}  
+#    a = Entity
+#    arr.each do |m|
+#      m = m.split(':')
+#      a = a.where(m[0]=>m[1])
+#    end

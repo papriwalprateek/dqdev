@@ -1,0 +1,35 @@
+# This file contains the PEG grammar definition that
+# Treetop uses to generate our parser.
+#
+# For more information check out the Treetop site:
+# http://treetop.rubyforge.org/
+
+grammar Sexp
+
+  rule expression
+    space?  body  space?  (',')? space? (expression)? <Expression>
+  end
+  
+  rule body
+    identifier  (is / isnot / nearly) identifier <Body>
+  end
+
+  
+  rule identifier
+    [a-zA-Z\_]* [\s]? [a-zA-Z\_]* <Identifier>
+  end
+
+  rule is
+     '='  <Is>
+  end
+  rule nearly
+      '~' <Nearly>
+  end
+  rule isnot
+      '!=' <Isnot>
+  end
+  rule space
+    [\s]+
+  end
+  
+end
